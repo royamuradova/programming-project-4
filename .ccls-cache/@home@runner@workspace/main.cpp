@@ -1,57 +1,50 @@
 #include <iostream>
+#include <cmath> // for ceil function
 using namespace std;
 
-// Function to check if a year is a leap year
-bool isLeapYear(int year) {
-    if (year % 4 == 0) {
-        if (year % 100 == 0) {
-            if (year % 400 == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    } else {
-        return false;
-    }
-}
-
-// Function to get the number of days in a month
-int getDaysInMonth(int month, int year) {
-    switch(month) {
-        case 1: case 3: case 5: case 7: case 8: case 10: case 12:
-            return 31;
-        case 4: case 6: case 9: case 11:
-            return 30;
-        case 2:
-            return (isLeapYear(year)) ? 29 : 28;
-        default:
-            return -1; // Invalid month
-    }
-}
-
 int main() {
-    int month, year;
+    double weight, distance, rate;
+    int distanceSegments;
 
-    cout << "Enter a month (1-12): ";
-    cin >> month;
+    // Get package weight
+    cout << "Enter the weight of the package (in kg): ";
+    cin >> weight;
 
-    if (month < 1 || month > 12) {
-        cout << "Invalid month. Please enter a month between 1 and 12." << endl;
-        return 1;
+    // Validate package weight
+    if (weight <= 0 || weight > 20) {
+        cout << "Invalid weight. The weight must be more than 0 and no more than 20 kg.\n";
+        return 1; // exit program with error
     }
 
-    cout << "Enter a year: ";
-    cin >> year;
+    // Get shipping distance
+    cout << "Enter the distance to be shipped (in miles): ";
+    cin >> distance;
 
-    int days = getDaysInMonth(month, year);
-    if (days == -1) {
-        cout << "Invalid input." << endl;
+    // Validate shipping distance
+    if (distance < 10 || distance > 3000) {
+        cout << "Invalid distance. The distance must be between 10 and 3000 miles.\n";
+        return 1; // exit program with error
+    }
+
+    // Determine rate based on weight
+    if (weight <= 2) {
+        rate = 1.10;
+    } else if (weight <= 6) {
+        rate = 2.20;
+    } else if (weight <= 10) {
+        rate = 3.70;
     } else {
-        cout << days << " days" << endl;
+        rate = 4.80;
     }
+
+    // Calculate the number of 500-mile segments (rounding up)
+    distanceSegments = ceil(distance / 500);
+
+    // Calculate total cost
+    double totalCost = distanceSegments * rate;
+
+    // Display the shipping charges
+    cout << "The shipping charge is: $" << totalCost << endl;
 
     return 0;
 }
